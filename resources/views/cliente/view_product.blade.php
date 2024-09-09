@@ -26,16 +26,21 @@
                 </div>
 
                 <div class="mt-6 sm:mt-8 lg:mt-0">
-                    <h1 class="text-xl font-semibold text-center text-gray-900 sm:text-2xl dark:text-white">
+                    <h1 class="text-xl font-extrabold text-center text-gray-900 sm:text-2xl dark:text-white">
                         {{ $product->nombre }}
                     </h1>
                     <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-                        <p class="text-lg font-extrabold text-gray-900 sm:text-xl dark:text-white">
+                        <p class="text-lg font-bold text-gray-900 sm:text-xl dark:text-white">
                             Precio: S/ {{ $product->precio_venta }}
                         </p>
                     </div>
                     <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-                        <p class="text-lg font-extrabold text-gray-900 sm:text-xl dark:text-white">
+                        <p class="text-lg font-bold text-gray-900 sm:text-xl dark:text-white">
+                            Categoría: {{ $product->category->nombre }}  |  Marca: {{ $product->brand->nombre }} 
+                        </p>
+                    </div>
+                    <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
+                        <p class="text-lg font-bold text-gray-900 sm:text-xl dark:text-white">
                             @if ($product->stock > 10)
                                 <span class="text-green-500">Stock disponible >10 unidades</span>
                             @else
@@ -166,7 +171,7 @@
                     <a href="{{ route('view.product', ['id' => $p->id]) }}"
                         class="group block bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
                         <div class="relative">
-                            <img class="w-full h-64 object-cover group-hover:opacity-90 transition-opacity duration-300"
+                            <img class="w-full h-64 object-fit group-hover:opacity-90 transition-opacity duration-300"
                                 src="{{ asset($p->image_url) }}" alt="{{ $p->nombre }}" />
                             <div
                                 class="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black via-transparent to-transparent group-hover:bg-gradient-to-t group-hover:from-black group-hover:via-black group-hover:to-transparent transition-colors duration-300">

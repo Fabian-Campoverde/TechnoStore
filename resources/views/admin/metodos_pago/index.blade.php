@@ -83,9 +83,9 @@ ol {
                 <th scope="col" class="px-6 py-3 text-center">
                     Comision
                 </th>      
-                <th scope="col" class="px-6 py-3 text-center">
+                {{-- <th scope="col" class="px-6 py-3 text-center">
                     Instrucciones
-                </th>     
+                </th>      --}}
               <th scope="col" class="px-6 py-3 text-center">
                 Estado
             </th>
@@ -124,11 +124,11 @@ ol {
                 <td class="px-6 py-4 text-center">
                     {{$m->tasa_transaccion}} %
                 </td>    
-                <td class="px-6 py-4 text-center">
+                {{-- <td class="px-6 py-4 text-center">
                     <span class="text-gray-600 font-semibold">{!! $m->instrucciones !!}  </span>
                        
                     
-                </td>     
+                </td>      --}}
                 <td class="px-6 py-4 text-center">
                     @if ($m->estado==="A")
                         <span class="text-green-600 font-semibold">Activo</span>

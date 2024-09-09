@@ -107,6 +107,19 @@
                                 </tfoot>
                             </table>
                         </div>
+                        <div class="mb-4">
+                            <label for="cancellation_reason" class="block text-sm font-medium text-gray-700">Motivo de Rechazo</label>
+                            <select id="cancellation_reason" name="cancellation_reason" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                                <option value="">Seleccione un motivo (opcional)</option>
+                                <option value="Pago mal realizado">Pago mal realizado</option>
+                                <option value="Error en la transacción">Error en la transacción</option>
+                                <option value="Producto fuera de stock">Producto fuera de stock</option>
+                                <option value="Cancelación por cliente">Cancelación por cliente</option>
+                                <option value="Datos incorrectos">Datos incorrectos</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                    
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="rejectButton" data-id=""
@@ -405,12 +418,13 @@
                             $('#inputDetails').html(detailsHTML);
                         }
 
-                        const paymentImageUrl = `{{ asset('orders') }}/${input.payment_image}`;
+                        const paymentImageUrl = `{{ asset('${input.payment_image}') }}`;
                         $('#inputID').text(input.order_number);
                         $('#inputMetodo').text(input.payment_method.nombre);
                         $('#inputFecha').text(input.payment_date);
                         $('#inputTotal').text('S/. ' + input.total);
                         $('#inputOperacion').text(input.operation_code);
+                        $('#cancellation_reason').val(input.cancellation_reason);
                         $('#lightboxImage').attr('src', paymentImageUrl);
                         $('#inputCliente').text(input.first_name + ' ' + input.last_name);
 
@@ -490,13 +504,15 @@
 
             $('#rejectButton').on('click', function() {
                 const orderId = $(this).data('id');
+                const cancellationReason = $('#cancellation_reason').val();
                 $.ajax({
                     url: `/admin/admin/orders/${orderId}/status`,
                     type: 'PUT',
                     data: {
                         _token: '{{ csrf_token() }}',
                         _method: 'PUT',
-                        estado: 'Cancelado'
+                        estado: 'Cancelado',
+                        cancellation_reason: cancellationReason
                     },
                     success: function(response) {
                         // Manejar la respuesta y actualizar la vista si es necesario

@@ -1,12 +1,9 @@
 @extends('layouts.page')
+@section('css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+@endsection
 @section('content')
     <div class="sliders bg-blue-200">
-        {{-- <div class="flex justify-center">
-            <a href="" class="flex items-center">
-                <img src="{{ asset('logo.png') }}" class="mr-3 sm:h-30 h-40 w-auto " alt="Logo" />
-            </a>
-        </div> --}}
-
         <div class="max-w-8xl mx-auto py-4 px-0">
 
             <div class="overflow-hidden  sm:rounded-lg">
@@ -71,28 +68,34 @@
         </div>
     </div>
     <!-- Input de búsqueda -->
-<div class="bg-blue-200 py-6">
-    <div class="max-w-4xl mx-auto px-4">
-        <form class="relative flex items-center max-w-3xl mx-auto" action="" method="GET" onsubmit="handleSearch(event)">
-            <!-- Icono de búsqueda -->
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg class="w-5 h-5 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.7-2.66A7.5 7.5 0 1113.5 5a7.5 7.5 0 014.85 8.5z"/>
-                </svg>
-            </div>
-            <!-- Input de búsqueda -->
-            <input type="search" id="search" name="search" placeholder="Buscar productos..."
-                class="block w-full pl-10 pr-4 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                required />
-            <!-- Botón de búsqueda -->
-            <button type="submit" class="absolute right-0 top-0 mt-2 mr-2 bg-blue-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
-                <svg class="w-4 h-4 text-white dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                </svg>
-            </button>
-        </form>
+    <div class="bg-blue-200 py-6">
+        <div class="max-w-4xl mx-auto px-4">
+            <form class="relative flex items-center max-w-3xl mx-auto" action="" method="GET"
+                onsubmit="handleSearch(event)">
+                <!-- Icono de búsqueda -->
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-4.35-4.35m1.7-2.66A7.5 7.5 0 1113.5 5a7.5 7.5 0 014.85 8.5z" />
+                    </svg>
+                </div>
+                <!-- Input de búsqueda -->
+                <input type="search" id="search" name="search" placeholder="Buscar productos..."
+                    class="block w-full pl-10 pr-4 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required />
+                <!-- Botón de búsqueda -->
+                <button type="submit"
+                    class="absolute right-0 top-0 mt-2 mr-2 bg-blue-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
+                    <svg class="w-4 h-4 text-white dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </button>
+            </form>
+        </div>
     </div>
-</div>
 
     <div class="categorias" id="products-section">
         <section class="bg-blue-200 py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -270,7 +273,7 @@
                     </div>
                     <div
                         class="mx-auto max-w-screen-sm text-sm text-center text-gray-500 newsletter-form-footer dark:text-gray-300">
-                        Nos preocupamos por la protección de sus datos. <a href="#"
+                        Nos preocupamos por la protección de sus datos. <a href="{{ route('politica') }}"
                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lea nuestra Política de
                             Privacidad.</a></div>
                 </form>
@@ -280,18 +283,36 @@
 @endsection
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    @if (session('status'))
+        <script>
+            Toastify({
+                text: '{{ session('message') }}', // Mensaje del toast desde la sesión
+                duration: 1500, // Duración del toast en milisegundos (en este caso, 1.5 segundos)
+                close: false, // Mostrar botón de cierre
+                gravity: 'top', // Posición del toast 
+                position: 'right', // Alineación del toast 
+                offset: {
+                    x: 10, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+                    y: 50 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+                },
+                backgroundColor: '#{{ session('color') }}', // Color de fondo del toast
+            }).showToast();
+        </script>
+    @endif
     <script>
         window.cartData = @json($cart);
     </script>
-<script>
-    function handleSearch(event) {
-        event.preventDefault();
-        const query = document.getElementById('search').value;
-        if (query) {
-            window.location.href = `{{ url('/search/results') }}/${encodeURIComponent(query)}`;
+
+    <script>
+        function handleSearch(event) {
+            event.preventDefault();
+            const query = document.getElementById('search').value;
+            if (query) {
+                window.location.href = `{{ url('/search/results') }}/${encodeURIComponent(query)}`;
+            }
         }
-    }
-</script>
+    </script>
     <!-- Incluir el archivo compilado `cart.js` -->
     <script type="text/javascript" src="js/cart.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

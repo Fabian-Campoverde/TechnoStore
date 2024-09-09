@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\BuyerController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\InputController;
 use App\Http\Controllers\Admin\InvoiceController;
@@ -45,6 +46,8 @@ Route::put('admin/sliders/{slider}/status', [SliderController::class,'status'])-
 Route::resource("/videos",VideoController::class)->names("admin.videos");
 Route::put('admin/videos/{video}/status', [VideoController::class,'status'])->name('admin.videos.status');
 
+Route::resource("/faqs",FaqController::class)->names("admin.faqs");
+Route::put('admin/faqs/{faq}/status', [FaqController::class,'status'])->name('admin.faqs.status');
 
 Route::resource("/buyers",BuyerController::class)->names("admin.buyers");
 

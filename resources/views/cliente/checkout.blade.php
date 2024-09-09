@@ -35,6 +35,9 @@
             /* Color de fondo al hacer hover */
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.7.1/dist/flowbite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@1.7.1/dist/flowbite.bundle.js"></script>
 @endsection
 @section('content')
 
@@ -295,10 +298,6 @@
                                             <img id="pago-imagen" src="" alt=""
                                                 class="object-cover w-full h-full" />
 
-                                            <!-- Instrucciones del método de pago -->
-                                            {{-- <div id="payment-instructions" class="mt-4 text-gray-700 dark:text-gray-300 px-4 ">
-                                    Pepe
-                                    </div> --}}
                                         </div>
                                         <div id="payment-instructions"
                                             class="mt-4 text-gray-700 dark:text-gray-300 px-4 ">

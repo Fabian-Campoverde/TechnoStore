@@ -16,43 +16,18 @@
             <div class="gap-4 sm:flex sm:items-center sm:justify-between">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Mis órdenes</h2>
 
-                {{-- <div class="mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
-                    <div>
-                        <label for="order-type" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Seleccionar tipo de orden</label>
-                        <select id="order-type" name="order-type"
-                            class="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                            <option value="all" {{ request('order-type') == 'all' ? 'selected' : '' }}>Todas las órdenes</option>
-                            <option value="Pendiente" {{ request('order-type') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-                            <option value="Enviado" {{ request('order-type') == 'Enviado' ? 'selected' : '' }}>Enviado</option>
-                            <option value="Aprobado" {{ request('order-type') == 'Aprobado' ? 'selected' : '' }}>Aprobado</option>
-                            <option value="Cancelado" {{ request('order-type') == 'Cancelado' ? 'selected' : '' }}>Cancelada</option>
-                        </select>
-                    </div>
-
-                    <span class="inline-block text-gray-500 dark:text-gray-400">desde</span>
-
-                    <div>
-                        <label for="duration" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Seleccionar duración</label>
-                        <select id="duration" name="duration"
-                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                            <option value="this week" {{ request('duration') == 'this week' ? 'selected' : '' }}>esta semana</option>
-                            <option value="this month" {{ request('duration') == 'this month' ? 'selected' : '' }}>este mes</option>
-                            <option value="last 3 months" {{ request('duration') == 'last 3 months' ? 'selected' : '' }}>los últimos 3 meses</option>
-                            <option value="last 6 months" {{ request('duration') == 'last 6 months' ? 'selected' : '' }}>los últimos 6 meses</option>
-                            <option value="this year" {{ request('duration') == 'this year' ? 'selected' : '' }}>este año</option>
-                        </select>
-                    </div>
-                </div> --}}
             </div>
 
             <div class="mt-6 flow-root sm:mt-8">
                 <div class="overflow-x-auto" id="orders-table">
+                
+                    @if ($orders->count()>0)
                     <table id="example" class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="py-3 px-6 text-center">ID de orden</th>
                                 <th scope="col" class="py-3 px-6 text-center">Fecha de orden</th>
-                                <th scope="col" class="py-3 px-6 text-center">Precio</th>
+                                <th scope="col" class="py-3 px-6 text-center">Monto</th>
                                 <th scope="col" class="py-3 px-6 text-center">Estado</th>
                                 <th scope="col" class="py-3 px-6 text-center"></th>
                             </tr>
@@ -61,10 +36,10 @@
                             @foreach ($orders as $order)
                             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                 <td class="py-4 px-6 text-center font-medium text-gray-900 dark:text-white">
-                                    <a href="#" class="hover:underline">{{ $order->order_number }}</a>
+                                    <a href="{{route('order.track', $order->id),}}" class="hover:underline">{{ $order->order_number }}</a>
                                 </td>
                                 <td class="py-4 px-6 text-center">
-                                    {{ $order->created_at->format('d/m/Y') }}
+                                    {{ \Carbon\Carbon::parse($order->created_at)->setTimezone('America/Lima')->format('d M Y, H:i') }}
                                 </td>
                                 <td class="py-4 px-6 text-center">
                                     S/ {{ number_format($order->total, 2) }}
@@ -89,18 +64,18 @@
                                     };
                                     
                                     $buttonText = match ($order->status) {
-                                        'Aprobado' => 'Detalles',
-                                        'Cancelado' => 'Reintentar',
-                                        'Pendiente' => 'Detalles',
-                                        'Enviado' => 'Rastrear',
+                                        'Aprobado' => 'Ver',
+                                        'Cancelado' => 'Ver',
+                                        'Pendiente' => 'Ver',
+                                        'Enviado' => 'Ver',
                                         default => '',
                                     };
                                 
                                     $buttonLink = match ($order->status) {
-                                        // 'Aprobado' => route('orders.show', $order->id),
-                                        // 'Cancelado' => route('orders.retry', $order->id),
-                                        // 'Pendiente' => route('orders.review', $order->id),
-                                        // 'Enviado' => route('orders.track', $order->id),
+                                        'Aprobado' => route('order.track', $order->id),
+                                        'Cancelado' => route('order.track', $order->id),
+                                        'Pendiente' => route('order.track', $order->id),
+                                        'Enviado' => route('order.track', $order->id),
                                         default => '#',
                                     };
                                 
@@ -129,7 +104,11 @@
                             </tr>
                             @endforeach
                         </tbody>
-                    </table>
+                    </table> 
+                    @else
+                       No tiene órdenes 
+                    @endif
+                    
                 </div>
                 <div class="mt-4">
                     {{ $orders->links() }}

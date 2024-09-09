@@ -31,7 +31,11 @@ class Order extends Model
         'payment_date',
         'operation_code',
         'total',
-        'user_id'
+        'user_id',
+        'approved_at',
+        'shipped_at',
+        'canceled_at',
+        'cancellation_reason'
     ];
 
     public function orderDetails()

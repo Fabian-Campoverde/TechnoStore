@@ -19,11 +19,11 @@ class OrderController extends Controller
      * Display a listing of the resource.
      */
 
-     public function __construct()
+    public function __construct()
     {
         $this->middleware("can:admin.orders.index")->only("index");
-        $this->middleware("can:admin.orders.create")->only("create","store");
-        $this->middleware("can:admin.orders.edit")->only("edit","update","status");
+        // $this->middleware("can:admin.orders.create")->only("create","store");
+        $this->middleware("can:admin.orders.edit")->only("edit", "update", "status");
         $this->middleware("can:admin.orders.destroy")->only("destroy");
         $this->middleware("can:admin.orders.show")->only("show");
         $this->middleware("can:admin.orders.pendiente")->only("indexPendiente");
@@ -41,7 +41,7 @@ class OrderController extends Controller
         // }
         // return view('admin.orders.index', compact('orders'));
     }
-    
+
 
     public function indexPendiente()
     {
@@ -212,21 +212,53 @@ class OrderController extends Controller
 
     public function status(Request $request, Order $order)
     {
-
+        // Actualiza el estado de la orden
         $order->status = $request->estado;
         $order->save();
+
+        if ($order->status === 'Cancelado') {
+            $order->canceled_at = now();
+            $order->cancellation_reason = $request->cancellation_reason;
+            $order->save();
+        }
         if ($order->status === 'Aprobado') {
+            $order->approved_at = now();
+            $order->save();
             // Cargar los detalles del pedido junto con la relación de productos
             $order->load('orderDetails.product');
 
             // Preparar los detalles del pedido
             $detalles = $order->orderDetails;
-            
+
             // Envía el correo al proveedor
             $proveedorEmail = 'fabian.leo2911@gmail.com';
             Mail::to($proveedorEmail)->send(new OrderApproved($order, $detalles));
+
+            // Cambiar el estado de la orden a 'Enviado'
             $order->status = 'Enviado';
+            $order->shipped_at = now();
             $order->save();
+
+            
+            if ($detalles->isNotEmpty()) {
+                // Actualizar el stock de los productos
+                foreach ($detalles as $detalle) {
+                    $producto = $detalle->product;
+
+                    // Asegurarse de que el producto exista y tenga stock
+                    if ($producto) {
+                        $producto->stock -= $detalle->quantity; // Disminuir el stock según la cantidad en la orden
+
+                        // Verificar si el stock llega a 0 o menos
+                        if ($producto->stock <= 0) {
+                            $producto->stock = 0; // Asegurarse de que el stock no sea negativo
+                            $producto->estado = 'I'; // Cambiar el estado del producto a 'Inactivo'
+                        }
+
+                        $producto->save(); // Guardar los cambios en el producto
+                    }
+                }
+            }
         }
 
         // Devolver una respuesta adecuada

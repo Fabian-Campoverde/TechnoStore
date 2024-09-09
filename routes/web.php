@@ -50,6 +50,15 @@ Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
 Route::get('/order/confirmation/{order}', [HomeController::class, 'orderConfirmation'])->name('order_confirmation');
 Route::get('/mis-ordenes', [HomeController::class, 'showOrders'])->middleware('auth')->name('user.orders');
 Route::get('/search/results/{name}', [HomeController::class, 'searchResults'])->name('search.results');
+Route::get('/novedades', [HomeController::class, 'novedades'])->name('novedades');
+Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('nosotros');
+Route::get('/metodo-envio', [HomeController::class, 'envio'])->name('envio');
+Route::get('/libro-reclamaciones', [HomeController::class, 'reclamos'])->name('reclamos');
+Route::get('/preguntas-frecuentes', [HomeController::class, 'faqs'])->name('faqs');
+Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
+Route::get('/terminos', [HomeController::class, 'terminos'])->name('terminos');
+Route::get('/politica', [HomeController::class, 'politica'])->name('politica');
+Route::get('/order/show/{id}', [HomeController::class, 'trackOrder'])->name('order.track');
 
 
 // Route::get('/correo',function(){

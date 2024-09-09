@@ -138,7 +138,7 @@
                         </div>
 
                         @auth
-                            <a href="{{ route('checkout') }}"
+                            <a href="{{ route('checkout') }}" id="checkout-link"
                                 class="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Proceder con el pago
                             </a>
@@ -178,6 +178,32 @@
     <script type="text/javascript" src="{{ asset('js/cart.js') }}"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+    // Obtén los datos del carrito desde la variable global
+    const cartData = window.cartData;
+
+    // Selecciona el enlace de checkout
+    $('#checkout-link').on('click', function(e) {
+        // Verifica si el carrito tiene productos
+        if (cartData && cartData.items && Object.keys(cartData.items).length > 0) {
+            // Si el carrito tiene productos, permite que el enlace funcione
+            return true;
+        } else {
+            // Si el carrito está vacío, muestra una alerta con SweetAlert2 y previene el redireccionamiento
+            e.preventDefault(); // Previene la acción por defecto del enlace
+
+            Swal.fire({
+                title: 'Carrito vacío',
+                text: 'No tiene productos en su carrito.',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6',
+            });
+        }
+    });
+});
+    </script>
     <script>
         $(document).ready(function() {
             // Inicializa el total en 0

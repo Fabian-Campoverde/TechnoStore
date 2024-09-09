@@ -424,6 +424,13 @@ return [
             'can'=>'admin.videos.index',
             
         ],
+        [
+            'text' => 'Preguntas Frecuentes',
+            'route'  => 'admin.faqs.index',
+            'icon' => 'fas fa-solid fa-video',
+            'can'=>'admin.videos.index',
+            
+        ],
          ['header' => 'VENTAS'],
          [
             'text' => 'Ordenes',
